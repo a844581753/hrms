@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guoren.hrms.department.mapper.IndicatorMapper">
+
+		<resultMap type="com.guoren.hrms.department.entity.Indicator" id="indicatorMapper">
+			<id property="id" column="dept_indicator_id"/>
+			<result property="year" column="dept_indicator_year"/>
+			<result property="month" column="dept_indicator_month"/>
+			<result property="bedAmount" column="dept_indicator_bedAmount"/>
+			<result property="doctorTargetAmount" column="dept_indicator_doctorTargetAmount"/>
+			<result property="nurseTargetAmount" column="dept_indicator_nurseTargetAmount"/>
+			<result property="otherTargetAmount" column="dept_indicator_otherTargetAmount"/>
+			<result property="targetSum" column="dept_indicator_targetSum"/>
+			<result property="doctorRealityAmount" column="dept_indicator_doctorRealityAmount"/>
+			<result property="nurseRealityAmount" column="dept_indicator_nurseRealityAmount"/>
+			<result property="otherRealityAmount" column="dept_indicator_otherRealityAmount"/>
+			<result property="realitySum" column="dept_indicator_realitySum"/>
+			<result property="doctorSurplusAmount" column="dept_indicator_doctorSurplusAmount"/>
+			<result property="nurseSurplusAmount" column="dept_indicator_nurseSurplusAmount"/>
+			<result property="otherSurplusAmount" column="dept_indicator_otherSurplusAmount"/>
+			<result property="surplusSum" column="dept_indicator_surplusSum"/>
+			<result property="remarkOne" column="dept_indicator_remarkOne"/>
+			<result property="remarkTwo" column="dept_indicator_remarkTwo"/>
+			<result property="state" column="dept__indicator_state"/>
+			<result property="belongToDeptId" column="dept__indicator_belongToDeptId"/>
+		</resultMap>
+		
+		<!-- 根据部门编号查找科室指标使用信息 -->
+		<select id="queryIndicatorByBelongToDeptId" resultMap="indicatorMapper" parameterType="com.guoren.hrms.department.entity.Indicator">
+			select * from department_indicator where dept__indicator_belongToDeptId = #{belongToDeptId} and dept__indicator_state=1
+		</select>
+		<!-- 科室指标使用表添加 -->
+		<insert id="addIndicator" parameterType="com.guoren.hrms.department.entity.Indicator">
+			insert into department_indicator (dept_indicator_year,dept_indicator_month,dept_indicator_bedAmount,dept_indicator_doctorTargetAmount,dept_indicator_nurseTargetAmount,dept_indicator_otherTargetAmount,dept_indicator_targetSum,dept_indicator_doctorRealityAmount,dept_indicator_nurseRealityAmount,dept_indicator_otherRealityAmount,dept_indicator_realitySum,dept_indicator_doctorSurplusAmount,dept_indicator_nurseSurplusAmount,dept_indicator_otherSurplusAmount,dept_indicator_surplusSum,dept_indicator_remarkOne,dept_indicator_remarkTwo,dept__indicator_state,dept__indicator_belongToDeptId) values(#{year},#{month},#{bedAmount},#{doctorTargetAmount},#{nurseTargetAmount},#{otherTargetAmount},#{targetSum},#{doctorRealityAmount},#{nurseRealityAmount},#{otherRealityAmount},#{realitySum},#{doctorSurplusAmount},#{nurseSurplusAmount},#{otherSurplusAmount},#{surplusSum},#{remarkOne},#{remarkTwo},#{state},#{belongToDeptId})
+	    </insert>
+              
+</mapper>

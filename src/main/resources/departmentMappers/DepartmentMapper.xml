@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guoren.hrms.department.mapper.DepartmentMapper">
+
+		<resultMap type="com.guoren.hrms.department.entity.Department" id="deptMapper">
+			<id property="deptId" column="dept_id"/>
+			<result property="deptName" column="dept_name"/>
+			<result property="deptLead" column="dept_lead"/>
+			<result property="deptNature" column="dept_nature"/>
+			<result property="membershipFunction" column="dept_membershipFunction"/>
+			<result property="deptRank" column="dept_rank"/>
+			<result property="industryInvolved" column="dept_industryInvolved"/>
+			<result property="affiliation" column="dept_affiliation"/>
+			<result property="economicType" column="dept_economicType"/>
+			<result property="financialResources" column="dept_financialResources"/>
+			<result property="managementModeOfPublicInstitution" column="dept_managementModeOfPublicInstitution"/>
+			<result property="homeCountry" column="dept_homeCountry"/>
+			<result property="homeCity" column="dept_homeCity"/>
+			<result property="deptAddress" column="dept_address"/>
+			<result property="postalCode" column="dept_postalCode"/>
+			<result property="phoneNumber" column="dept_phoneNumber"/>
+			<result property="faxNumber" column="dept_faxNumber"/>
+			<result property="deptParentId" column="dept_parent_id"/>
+			<result property="deptState" column="dept_state"/>
+		</resultMap>
+		<!-- // 根据父id查询子类部门(组织架构图使用) -->
+       <select id="queryDepartmentByDeptParentId" resultMap="deptMapper">
+       		 SELECT * FROM department WHERE  dept_parent_id=#{deptParentId} and dept_state=1
+       </select>
+       <!-- // 查询所有部门(组织架构图使用) -->
+       <select id="queryAllDepartment" resultMap="deptMapper">
+       		 SELECT * FROM department where dept_state=1
+       </select>
+       
+       <!--// 查询除了一级部门以外的部门(组织架构图使用) -->
+       <select id="selectAllNotBase" resultMap="deptMapper">
+       		 SELECT * FROM department where dept_parent_id!= 0 and dept_state=1
+       </select>
+       
+       <!-- // 查询所有部门带分页带条件 -->
+       <select id="queryAllDepartments" resultMap="deptMapper" parameterType="com.guoren.hrms.department.entity.Department">
+       		 SELECT * FROM department
+       		 <where>
+				<if test="deptId!=null">
+					and dept_id=#{deptId}
+				</if>
+				<if test="deptName!=null and deptName!='' ">
+					and dept_name like concat('%',#{deptName},'%')
+				</if>
+				<if test="deptLead!=null and deptLead!='' ">
+					and dept_lead like concat('%',#{deptLead},'%')
+				</if>
+				<if test="deptNature!=null and deptNature!='' ">
+					and dept_nature like concat('%',#{deptNature},'%')
+				</if>
+				<if test="membershipFunction!=null and membershipFunction!='' ">
+					and dept_membershipFunction like concat('%',#{membershipFunction},'%')
+				</if>
+				<if test="deptRank!=null and deptRank!='' ">
+					and dept_rank like concat('%',#{deptRank},'%')
+				</if>
+				<if test="industryInvolved!=null and industryInvolved!='' ">
+					and dept_industryInvolved like concat('%',#{industryInvolved},'%')
+				</if>
+				<if test="affiliation!=null and affiliation!='' ">
+					and dept_affiliation like concat('%',#{affiliation},'%')
+				</if>
+				<if test="economicType!=null and economicType!='' ">
+					and dept_economicType like concat('%',#{economicType},'%')
+				</if>
+				<if test="financialResources!=null and financialResources!='' ">
+					and dept_financialResources like concat('%',#{financialResources},'%')
+				</if>
+				<if test="managementModeOfPublicInstitution!=null and managementModeOfPublicInstitution!='' ">
+					and dept_managementModeOfPublicInstitution like concat('%',#{managementModeOfPublicInstitution},'%')
+				</if>
+				<if test="homeCountry!=null and homeCountry!='' ">
+					and dept_homeCountry like concat('%',#{homeCountry},'%')
+				</if>
+				<if test="homeCity!=null and homeCity!='' ">
+					and dept_homeCity like concat('%',#{homeCity},'%')
+				</if>
+				<if test="deptAddress!=null and deptAddress!='' ">
+					and dept_address like concat('%',#{deptAddress},'%')
+				</if>
+				<if test="postalCode!=null and postalCode!='' ">
+					and dept_postalCode like concat('%',#{postalCode},'%')
+				</if>
+				<if test="phoneNumber!=null and phoneNumber!='' ">
+					and dept_phoneNumber like concat('%',#{phoneNumber},'%')
+				</if>
+				<if test="faxNumber!=null and faxNumber!='' ">
+					and dept_faxNumber like concat('%',#{faxNumber},'%')
+				</if>
+				<if test="deptParentId!=null">
+					and dept_parent_id=#{deptParentId}
+				</if>
+				 	and	dept_state=1	
+			</where>
+       </select>
+       
+       <!-- // 添加部门 -->
+       <insert id="addDepartment" parameterType="com.guoren.hrms.department.entity.Department">
+			insert into department values(#{deptId},#{deptName},#{deptLead},#{deptNature},#{membershipFunction},#{deptRank},#{industryInvolved},#{affiliation},#{economicType},#{financialResources},#{managementModeOfPublicInstitution},#{homeCountry},#{homeCity},#{deptAddress},#{postalCode},#{phoneNumber},#{faxNumber},#{deptParentId},#{deptState})
+	   </insert>
+	   
+	   <!-- 根据编号修改部门信息 -->
+		<update id="updateDepartmentBydeptId" parameterType="com.guoren.hrms.department.entity.Department">
+			update department set dept_name=#{deptName},dept_lead=#{deptLead},dept_nature=#{deptNature},dept_membershipFunction=#{membershipFunction},dept_rank=#{deptRank},dept_industryInvolved=#{industryInvolved},dept_affiliation=#{affiliation},dept_economicType=#{economicType},dept_financialResources=#{financialResources},dept_managementModeOfPublicInstitution=#{managementModeOfPublicInstitution},dept_homeCountry=#{homeCountry},dept_homeCity=#{homeCity},dept_address=#{deptAddress},dept_postalCode=#{postalCode},dept_phoneNumber=#{phoneNumber},dept_faxNumber=#{faxNumber},dept_parent_id=#{deptParentId} where dept_id=#{deptId}
+		</update>
+              
+</mapper>
